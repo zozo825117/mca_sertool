@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cec38f25-ac1c-4ffc-9933-cc90b8967f13" name="Default" comment="" />
+    <list default="true" id="cec38f25-ac1c-4ffc-9933-cc90b8967f13" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mca_sertool/defaults.py" beforeDir="false" afterPath="$PROJECT_DIR$/mca_sertool/defaults.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mca_sertool/keymaps.py" beforeDir="false" afterPath="$PROJECT_DIR$/mca_sertool/keymaps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mca_sertool/mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/mca_sertool/mainwindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mca_sertool/method.py" beforeDir="false" afterPath="$PROJECT_DIR$/mca_sertool/method.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -10,41 +16,97 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/mca_sertool$mainwindow.coverage" NAME="mainwindow Coverage Results" MODIFIED="1546421450956" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mca_sertool" />
+    <SUITE FILE_PATH="coverage/mca_sertool$mainwindow.coverage" NAME="mainwindow Coverage Results" MODIFIED="1546592598584" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mca_sertool" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-        <entry file="file://D:/Program Files/Python/Python36/Lib/tkinter/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="39729">
-              <caret line="2094" selection-start-line="2094" selection-end-line="2094" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="method.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/mca_sertool/method.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
-              <caret line="41" column="39" lean-forward="true" selection-start-line="41" selection-start-column="39" selection-end-line="41" selection-end-column="39" />
-              <folding>
-                <element signature="e#49#69#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mainwindow.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mca_sertool/mainwindow.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="610" column="29" selection-start-line="610" selection-start-column="25" selection-end-line="610" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.59667486">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+          <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+            <entry file="file://D:/Program Files/Python/Python36/Lib/tkinter/__init__.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="39406">
+                  <caret line="2077" column="18" selection-start-line="2077" selection-start-column="18" selection-end-line="2077" selection-end-column="18" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="method.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mca_sertool/method.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="628">
+                  <caret line="180" column="54" selection-start-line="180" selection-start-column="54" selection-end-line="180" selection-end-column="54" />
+                  <folding>
+                    <element signature="e#49#69#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="mainwindow.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/mca_sertool/mainwindow.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="95">
+                  <caret line="5" selection-start-line="5" selection-end-line="6" selection-end-column="14" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="keymaps.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mca_sertool/keymaps.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="152">
+                  <caret line="8" column="20" selection-start-line="8" selection-end-line="8" selection-end-column="20" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+          <file leaf-file-name="keymaps.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mca_sertool/keymaps.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="133">
+                  <caret line="7" column="30" selection-start-line="7" selection-end-line="7" selection-end-column="30" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="defaults.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mca_sertool/defaults.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="380">
+                  <caret line="20" column="57" selection-start-line="20" selection-start-column="57" selection-end-line="20" selection-end-column="57" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="mainwindow.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mca_sertool/mainwindow.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1045">
+                  <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="method.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/mca_sertool/method.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="385">
+                  <caret line="780" column="22" lean-forward="true" selection-start-line="780" selection-start-column="22" selection-end-line="780" selection-end-column="22" />
+                  <folding>
+                    <element signature="e#49#69#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -55,22 +117,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>pytk.PytFrame</find>
-      <find>tk.Scrollbar</find>
-      <find>pytk.PytLabel</find>
-      <find>pytk.PyMenu</find>
-      <find>rightKey</find>
-      <find>id_format_frame_len_entry = None</find>
-      <find>initTool</find>
       <find>id_dict_updata_ui</find>
-      <find>long_repeat</find>
-      <find>self</find>
-      <find>id_format_gen_btn_click_event</find>
-      <find>iss</find>
-      <find>'id_format_str'</find>
-      <find>'id_chk_type'</find>
-      <find>IdF_id_chk_type</find>
-      <find>MODE</find>
+      <find>DEF_CHECK_TYPE</find>
+      <find>DEF_CHECK</find>
+      <find>row in gen</find>
+      <find>'id_chk_start_index'</find>
+      <find>__contains__</find>
+      <find>id_dict_buf</find>
+      <find>self.variables[var_receiveProgressStop]</find>
+      <find>IdTotalDict</find>
+      <find>tag_info_total_listbox</find>
+      <find>'实际无效标签数'</find>
+      <find>'实际可用标签数'</find>
+      <find>DEF_TOTAL_ID_NUM</find>
+      <find>2.1 ID段号格式错误！</find>
+      <find>b_id_id=</find>
+      <find>len=</find>
+      <find>vkey=</find>
+      <find>id_dict_total.keys()</find>
+      <find>com.close</find>
+      <find>receiveCount</find>
+      <find>id_data_count</find>
+      <find>frm_status_receive_bytes_num</find>
+      <find>id_keys=</find>
+      <find>'效验'</find>
+      <find>id_add_id_dict</find>
+      <find>'count'</find>
+      <find>has id :</find>
+      <find>10.0</find>
+      <find>var_dataLogScrollStopDelayTime</find>
+      <find>'未检测标签数'</find>
     </findStrings>
     <replaceStrings>
       <replace>ttk.Frame</replace>
@@ -85,15 +161,32 @@
       <replace>parent</replace>
       <replace>IdF_IdF_id_format_str</replace>
       <replace>IdF_id_chk_type</replace>
+      <replace>ID_ROWS_START</replace>
+      <replace>DEF_FRAME_LEN</replace>
+      <replace>IDF_ID_R_PATTERN</replace>
+      <replace>DEF_CHECK_TYPE</replace>
+      <replace>check_type</replace>
+      <replace>IDF_ID_CHK_INDEX</replace>
+      <replace>IdF_id_chk_start_index</replace>
+      <replace>id_add_id_dict</replace>
+      <replace>DEF_TOTAL_ID_NUM</replace>
+      <replace>DEF_AVAILABLE_ID_NUM</replace>
+      <replace>DEF_INVALID_ID_NUM</replace>
+      <replace>DEF_CHECK</replace>
+      <replace>IDDICT_COUNT</replace>
     </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/mca_sertool/leftwindow.py" />
+        <option value="$PROJECT_DIR$/mca_sertool/defaults.py" />
         <option value="$PROJECT_DIR$/mca_sertool/keymaps.py" />
-        <option value="$PROJECT_DIR$/mca_sertool/mainwindow.py" />
         <option value="$PROJECT_DIR$/mca_sertool/method.py" />
+        <option value="$PROJECT_DIR$/mca_sertool/mainwindow.py" />
       </list>
     </option>
   </component>
@@ -107,15 +200,18 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="952" />
-    <option name="width" value="976" />
-    <option name="height" value="1050" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1060" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -137,12 +233,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../rf_monitor_project" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -186,6 +281,7 @@
     </recent_temporary>
   </component>
   <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
     <option name="ACTIVE_ACTIONS" value=",SHOW_INHERITED,SHOW_FIELDS" />
   </component>
   <component name="SvnConfiguration">
@@ -208,16 +304,15 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.33551913" />
-      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.33551913" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info auto_hide="true" content_ui="combo" id="Project" order="1" sideWeight="0.49945354" weight="0.21770833" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32896176" />
       <window_info anchor="right" id="SciView" order="1" />
-      <window_info active="true" anchor="right" id="Structure" order="5" sideWeight="0.50054646" side_tool="true" visible="true" weight="0.1625" />
+      <window_info anchor="right" id="Structure" order="5" sideWeight="0.50054646" side_tool="true" visible="true" weight="0.15416667" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
@@ -226,6 +321,7 @@
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32896176" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,10 +332,124 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="10" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://D:/Program Files/Python/Python36/Lib/tkinter/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="39406">
+          <caret line="2077" column="18" selection-start-line="2077" selection-start-column="18" selection-end-line="2077" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/keymaps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="30" selection-start-line="7" selection-end-line="7" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/defaults.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="20" column="57" selection-start-line="20" selection-start-column="57" selection-end-line="20" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/mainwindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28063">
+          <caret line="1477" column="20" selection-start-line="1477" selection-start-column="20" selection-end-line="1477" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3268">
+          <caret line="180" column="54" lean-forward="true" selection-start-line="180" selection-start-column="54" selection-end-line="180" selection-end-column="54" />
+          <folding>
+            <element signature="e#49#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Program Files/Python/Python36/Lib/tkinter/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="39406">
+          <caret line="2077" column="18" selection-start-line="2077" selection-start-column="18" selection-end-line="2077" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/mainwindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27664">
+          <caret line="1456" column="21" selection-start-line="1456" selection-start-column="21" selection-end-line="1456" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/keymaps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1710">
+          <caret line="90" column="26" lean-forward="true" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/defaults.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3857">
+          <caret line="203" column="31" selection-start-line="203" selection-start-column="26" selection-end-line="203" selection-end-column="31" />
+          <folding>
+            <element signature="e#49#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Program Files/Python/Python36/Lib/tkinter/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="39406">
+          <caret line="2077" column="18" selection-start-line="2077" selection-start-column="18" selection-end-line="2077" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/mainwindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27949">
+          <caret line="1471" column="48" selection-start-line="1471" selection-start-column="48" selection-end-line="1471" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/keymaps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1710">
+          <caret line="90" column="26" lean-forward="true" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/defaults.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/method.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16967">
+          <caret line="893" column="14" lean-forward="true" selection-start-line="893" selection-start-column="14" selection-end-line="893" selection-end-column="60" />
+          <folding>
+            <element signature="e#49#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://D:/Program Files/Python/Python36/Lib/tkinter/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="39729">
@@ -266,52 +476,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/setup.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-119">
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
+        <state relative-caret-position="-119" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mca_sertool/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/leftwindow.py" />
     <entry file="file://D:/Program Files/Python/Python36/Lib/tkinter/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39729">
-          <caret line="2094" selection-start-line="2094" selection-end-line="2094" />
+        <state relative-caret-position="39406">
+          <caret line="2077" column="18" selection-start-line="2077" selection-start-column="18" selection-end-line="2077" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mca_sertool/leftwindow.py" />
     <entry file="file://$PROJECT_DIR$/mca_sertool/defaults.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="380">
-          <caret line="20" column="25" lean-forward="true" selection-start-line="20" selection-start-column="25" selection-end-line="20" selection-end-column="25" />
+          <caret line="20" column="57" selection-start-line="20" selection-start-column="57" selection-end-line="20" selection-end-column="57" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mca_sertool/keymaps.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="16" column="31" lean-forward="true" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mca_sertool/mainwindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="610" column="29" selection-start-line="610" selection-start-column="25" selection-end-line="610" selection-end-column="29" />
+        <state relative-caret-position="152">
+          <caret line="8" column="20" selection-start-line="8" selection-end-line="8" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mca_sertool/method.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="41" column="39" lean-forward="true" selection-start-line="41" selection-start-column="39" selection-end-line="41" selection-end-column="39" />
+        <state relative-caret-position="628">
+          <caret line="180" column="54" selection-start-line="180" selection-start-column="54" selection-end-line="180" selection-end-column="54" />
           <folding>
             <element signature="e#49#69#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mca_sertool/mainwindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" selection-start-line="5" selection-end-line="6" selection-end-column="14" />
         </state>
       </provider>
     </entry>

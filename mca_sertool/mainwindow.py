@@ -3,6 +3,9 @@
 
 import sys
 
+#TODO HEX数据无法添加标签
+#TODO 生成ID速度问题
+
 if sys.version_info[0] < 3:
     # If we're executing with Python 2
     import Tkinter as tk
@@ -48,7 +51,11 @@ class SerialToolUI(object):
 
         self.com = serial.Serial()
         self.receiveCount = 0
-        self.timeLastReceive = None
+        self.receive_count_without_space = 0
+        self.id_data_count = 0
+        self.id_correct_data_count = 0
+
+        self.timeLastReceive = 0
 
         # self.thresholdValue = 1
         self.mbar = None
@@ -164,7 +171,6 @@ class SerialToolUI(object):
             'receiveProgressStop': False,
             'dataLogScrollStop': True,
             'dataLogScrollStopTime': 10.0,
-            'dataLogScrollStopDelayTime': 10.0,
         }
 
         self.TKvariables = {}
@@ -174,8 +180,8 @@ class SerialToolUI(object):
 
         self.IdFormat = {
             'id_format_str': '',
-            'id_start_index': 0,
-            'id_start_limit': 3,
+            # 'id_start_index': 0,
+            # 'id_start_limit': 3,
             'id_start': '',
             'id_nn_index': 0,
             'id_nn': '',
@@ -187,9 +193,9 @@ class SerialToolUI(object):
             'id_state2_index': 0,
             'id_state2': '',
             'id_chk_type': 'None',
-            'id_chk_index': 0,
+            IDF_ID_CHK_INDEX: 0,
             'id_chk': '',
-            'id_chk_start_index': 0,
+            IDF_ID_CHK_START_INDEX: 0,
             'id_chk_str': '',
             'id_r_pattern': '',
             'id_seg_str': '',
@@ -202,7 +208,7 @@ class SerialToolUI(object):
             'id_id': {
                 'sn': '',
                 'rssi': '',
-                'count': 1,
+                IDDICT_COUNT: 1,
 
                 '1st_rec_data': "%Y-%m-%d %H:%M:%S.%f')[:-3]",
                 '1st_rec_time': "%Y-%m-%d %H:%M:%S.%f')[:-3]",
@@ -750,12 +756,12 @@ class SerialToolUI(object):
         #                                                    font=font_label_temp)
 
         self.id_format_frame_len_entry = ttk.Entry(self.id_format_frame,
-                                                   textvariable=self.TKvariables['帧长'],
+                                                   textvariable=self.TKvariables[DEF_FRAME_LEN],
                                                    font=font_label_temp)
         self.id_format_frame_len_entry.bind('<Button-1 >',
                                             self.id_format_frame_len_entry_event)
 
-        self.TKvariables['帧长'].set(len(self.id_format_frame_id_frame_entry.get()))
+        self.TKvariables[DEF_FRAME_LEN].set(len(self.id_format_frame_id_frame_entry.get()))
         self.id_format_frame_len_entry.config(state='disable')
 
         # __MODES = [
@@ -773,19 +779,20 @@ class SerialToolUI(object):
         #
         #     b.grid(row=index+2, column=1, padx=1, pady=0, sticky="w")
 
-        frame_check_type = ["None", "2CRC", "Sum", "2Sum", "Xor", "2Xor"]
+        frame_check_type = [CHECK_TYPE_NONE, CHECK_TYPE_CRC, CHECK_TYPE_2CRC,
+                            CHECK_TYPE_SUM, CHECK_TYPE_2SUM, CHECK_TYPE_XOR, CHECK_TYPE_2XOR]
         self.id_string_combobox_frame_check = ttk.Combobox(self.id_format_frame,
                                                            values=frame_check_type,
-                                                           textvariable=self.TKvariables['效验'])
+                                                           textvariable=self.TKvariables[DEF_CHECK])
         self.id_string_combobox_frame_check.current(0)
 
         ah = ["dec", "hex"]
         self.id_string_combobox_frame_type = ttk.Combobox(self.id_format_frame,
                                                           values=ah,
-                                                          textvariable=self.TKvariables['id_type'])
-        self.id_string_combobox_frame_type.current(0)
+                                                          textvariable=self.TKvariables[def_id_type])
+        self.id_string_combobox_frame_type.current(1)
         self.id_format_id_check_entry = ttk.Entry(self.id_format_frame,
-                                                  textvariable=self.TKvariables['效验格式'],
+                                                  textvariable=self.TKvariables[DEF_CHECK_TYPE],
                                                   font=font_label_temp)
         self.id_format_id_check_entry.bind(
             "<Button-3>",
@@ -811,8 +818,10 @@ class SerialToolUI(object):
 
         self.id_format_restart_btn = ttk.Button(self.id_format_frame,
                                                 text="重新计数",
-                                                font=font,
-                                                command=self.id_format_restart_btn_click_event)
+                                                font=font)
+
+        self.id_format_restart_btn.bind('<Button-1 >',
+                                    self.id_format_restart_btn_event)
 
         self.id_format_id_ex = tk.Text(self.id_format_frame,
                                        fg='#ABB2B9',
@@ -954,7 +963,7 @@ class SerialToolUI(object):
 
         self.tag_info_available_label_num_entry = ttk.Entry(
             self.frm_right_tag_info_available,
-            textvariable=self.TKvariables['实际可用标签数'],
+            textvariable=self.TKvariables[DEF_AVAILABLE_ID_NUM],
             font=font_label_temp)
 
         self.tag_info_available_text_frame = ttk.LabelFrame(
@@ -1011,7 +1020,7 @@ class SerialToolUI(object):
 
         self.tag_info_invalid_label_num_entry = ttk.Entry(
             self.frm_right_tag_info_invalid,
-            textvariable=self.TKvariables['实际无效标签数'],
+            textvariable=self.TKvariables[DEF_INVALID_ID_NUM],
             font=font_label_temp)
 
         self.tag_info_invalid_text_frame = ttk.LabelFrame(self.frm_right_tag_info_invalid)
@@ -1066,7 +1075,7 @@ class SerialToolUI(object):
 
         self.tag_info_total_label_num_entry = ttk.Entry(
             self.frm_right_tag_info_total,
-            textvariable=self.TKvariables['未检测标签数'],
+            textvariable=self.TKvariables[DEF_TOTAL_ID_NUM],
             font=font_label_temp)
 
         self.tag_info_total_text_frame = ttk.LabelFrame(self.frm_right_tag_info_total)
@@ -1354,7 +1363,10 @@ class SerialToolUI(object):
               'id_len=%d' % (len(self.id_format_frame_id_frame_entry.get())))
         if str(event.type) == 'ButtonPress':
             self.id_format_frame_len_entry.config(state='normal')
-            self.TKvariables['帧长'].set(len(self.id_format_frame_id_frame_entry.get()))
+            s = self.id_format_frame_id_frame_entry.get()
+            s = s.replace(' ', '')
+            s = s.replace('|', '')
+            self.TKvariables[DEF_FRAME_LEN].set(len(s))
             self.id_format_frame_len_entry.config(state='disable')
 
     def id_format_id_type_entry_event(self):
@@ -1373,11 +1385,18 @@ class SerialToolUI(object):
             # self.id_format_gen()
             return
 
-    def id_format_frame_type_radiobutton_cb(self):
-        print('id_format_frame_type=%d' % int(self.TKvariables['id_type'].get()))
+    def id_format_restart_btn_event(self, event):
+        print(datetime.now().strftime('%H:%M:%S.%f')[:-3],
+              'id_format_restart_btn_event,type=%s' % event.type)
+        if str(event.type) == 'ButtonPress':
+            restart_btn_process = threading.Thread(target=self.id_format_gen_reg_reset_thread())
+            restart_btn_process.setDaemon(True)
+            restart_btn_process.start()
+            # self.id_format_gen()
+            return
 
-    def id_format_restart_btn_click_event(self):
-        pass
+    def id_format_frame_type_radiobutton_cb(self):
+        print('id_format_frame_type=%d' % int(self.TKvariables[def_id_type].get()))
 
     def log_notebook_frame1_scrollbar_event(self, event):
         print(datetime.now().strftime('%H:%M:%S.%f')[:-3],
@@ -1389,90 +1408,96 @@ class SerialToolUI(object):
             self.variables[var_dataLogScrollStopTime] = time.time()
             print('time type=%s time=%5f' % (type(self.variables[var_dataLogScrollStopTime])
                                              , self.variables[var_dataLogScrollStopTime]))
+
     def receive_data_thread(self):
         self.variables[var_receiveProgressStop] = False
         self.timeLastReceive = time.time()
 
         while not self.variables[var_receiveProgressStop]:
-            # try:
-            # length = self.com.in_waiting
-            # length = max(1, min(2048, self.com.in_waiting))
-            length = min(2048, self.com.in_waiting)
-            # print(time.time())
+            try:
+                # length = self.com.in_waiting
+                # length = max(1, min(2048, self.com.in_waiting))
+                length = min(2048, self.com.in_waiting)
+                # print(time.time())
 
-            if length:
-                rbytes = self.com.read(length)
-            else:
-                rbytes = None
-
-            if rbytes is not None:
-                # print(datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
-                print('[', datetime.now().strftime('%H:%M:%S.%f')[:-3], '] ', "len=%d" % (length))
-                start = time.time()
-                # print("len=%d" % (length))
-                # if self.isWaveOpen:
-                #     self.wave.displayData(bytes)
-                self.receiveCount += len(rbytes)
-                self.frm_status_receive_bytes_num.config(text=str(self.receiveCount))
-
-                # hex
-                if int(self.TKvariables['rec_hex_ascii'].get()):
-                    str_received = asciib_to_hexstring(rbytes)
-                    # self.receiveUpdateSignal.emit(str_received)
-                    self.log_notebook_frame1_data.insert(tk.END, str_received)
-                    # self.log_notebook_frame1_data.see(tk.END)
+                if length:
+                    rbytes = self.com.read(length)
                 else:
-                    str_received = bytes.decode(rbytes)
-                    log = \
-                        '[' + datetime.now().strftime('%H:%M:%S.%f')[:-3] + '] ' + \
-                        str_received + '\n'
+                    rbytes = None
 
-                    self.log_notebook_frame1_data.insert(tk.END, log)
-                    end = time.time()
-                    print('rec leedting = %5fs' % (end - start))
+                if rbytes is not None:
+                    # print(datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
+                    print('[', datetime.now().strftime('%H:%M:%S.%f')[:-3], '] ', "len=%d rbytes=%s"
+                          % (length, rbytes))
+                    # start = time.time()
+                    # print("len=%d" % (length))
+                    # if self.isWaveOpen:
+                    #     self.wave.displayData(bytes)
+                    self.receiveCount += len(rbytes)
+                    self.frm_status_receive_bytes_num.config(text=str(self.receiveCount))
 
-                    if self.variables[var_dataLogScrollStop]:
-                        if time.time() - self.variables[var_dataLogScrollStopTime] > \
-                                self.variables[var_dataLogScrollStopDelayTime]:
-                            self.variables[var_dataLogScrollStop] = False
-                    if not self.variables[var_dataLogScrollStop]:
-                        self.log_notebook_frame1_data.see(tk.END)
+                    # hex
+                    if int(self.TKvariables['rec_hex_ascii'].get()):
+                        str_received = asciib_to_hexstring(rbytes)
+                        # self.receiveUpdateSignal.emit(str_received)
+                        self.log_notebook_frame1_data.insert(tk.END, str_received)
+                        # self.log_notebook_frame1_data.see(tk.END)
+                    else:
+                        # str_received = bytes.decode(rbytes)
+                        str_received = rbytes.decode(errors='ignore')
+                        log = \
+                            '[' + datetime.now().strftime('%H:%M:%S.%f')[:-3] + '] ' + \
+                            str_received + '\n'
 
-                # if (int(self.TKvariables['linefeed'].get())) == 1:
-                #     if time.time() - self.timeLastReceive > \
-                #             int(self.TKvariables['linefeedtime'].get()) / 1000:
-                #         # if self.sendSettingsCFLF.isChecked():
-                #         #     self.receiveUpdateSignal.emit("\r\n")
-                #         # else:
-                #         #     self.receiveUpdateSignal.emit("\n")
-                #         self.log_notebook_frame1_data.insert(tk.END, "\r\n")
-                #         # self.log_notebook_frame1_data.see(tk.END)
-                #
-                # if time.time() - self.timeLastReceive > 1:
-                #     self.log_notebook_frame1_data.see(tk.END)
+                        rec_update_log_ui(self, log)
+                        # self.log_notebook_frame1_data.insert(tk.END, log)
+                        # # end = time.time()
+                        # # print('rec leedting = %5fs' % (end - start))
+                        #
+                        # if self.variables[var_dataLogScrollStop]:
+                        #     if time.time() - self.variables[var_dataLogScrollStopTime] > \
+                        #             self.variables[var_dataLogScrollStopDelayTime]:
+                        #         self.variables[var_dataLogScrollStop] = False
+                        # if not self.variables[var_dataLogScrollStop]:
+                        #     self.log_notebook_frame1_data.see(tk.END)
 
-                if self.IdFormat['id_format_str'] is not '':
-                    id_format_check_process(self,str_received)
+                        # if (int(self.TKvariables['linefeed'].get())) == 1:
+                        #     if time.time() - self.timeLastReceive > \
+                        #             int(self.TKvariables['linefeedtime'].get()) / 1000:
+                        #         # if self.sendSettingsCFLF.isChecked():
+                        #         #     self.receiveUpdateSignal.emit("\r\n")
+                        #         # else:
+                        #         #     self.receiveUpdateSignal.emit("\n")
+                        #         self.log_notebook_frame1_data.insert(tk.END, "\r\n")
+                        #         # self.log_notebook_frame1_data.see(tk.END)
+                        #
+                        # if time.time() - self.timeLastReceive > 1:
+                        #     self.log_notebook_frame1_data.see(tk.END)
+                    # print('rec set format=%s,type str:%s' % (self.TKvariables['rec_hex_ascii'].get(),
+                    #                                          type(str_received)))
+                    if self.IdFormat['id_format_str'] is not '':
+                        id_format_check_process(self,str_received)
 
-                self.timeLastReceive = time.time()
-            time.sleep(0.001)
+                    self.timeLastReceive = time.time()
 
-        #     except Exception as e:
-        #         print("receiveData error")
-        #         # if self.com.is_open and not self.serialPortCombobox.isEnabled():
-        #         self.openCloseSerial()
-        #         #     self.serialPortCombobox.clear()
-        #         #     self.detectSerialPort()
-        #         print(e)
-        #     # time.sleep(0.009)
-        # return
+                # time.sleep(0.001)
+
+            except Exception as e:
+                com_close(self)
+                # print("receiveData error")
+                # if self.com.is_open and not self.serialPortCombobox.isEnabled():
+                # self.open_close_serial()
+                #     self.serialPortCombobox.clear()
+                #     self.detectSerialPort()
+                print('串口接收错误！', e)
+                messagebox.showerror(message=('串口接收错误！', e))
+            time.sleep(0.00050)
+        return
 
     def open_close_serial_thread(self):
 
         if self.com.is_open:
-            self.variables[var_receiveProgressStop] = True
-            self.com.close()
-            self.frm_status_label.config(text='Closed', foreground='#C0392B')
+            com_close(self)
         else:
             if self.TKvariables['serial_port'].get() == '':
                 messagebox.showerror(message='Select a COM port!')
@@ -1508,6 +1533,7 @@ class SerialToolUI(object):
                     # self.serialOpenCloseButton.setText(parameters.strClose)
                     # self.statusBarStauts.setText("<font color=%s>%s</font>" % ("#008200", parameters.strReady))
                     self.frm_status_label.config(text='Ready', foreground='#27AE60')
+                    self.frm_status_receive_bytes_num.config(text=str(self.receiveCount))
                     # self.serialPortCombobox.setDisabled(True)
                     # self.serailBaudrateCombobox.setDisabled(True)
                     # self.serailParityCombobox.setDisabled(True)
@@ -1521,7 +1547,9 @@ class SerialToolUI(object):
                     self.log_notebook_frame1_data.delete(1.0, tk.END)
 
                 except Exception as e:
+                    self.variables[var_receiveProgressStop] = True
                     self.com.close()
+                    self.frm_status_label.config(text='Closed', foreground='#C0392B')
                     # self.receiveProgressStop = True
                     # self.errorSignal.emit(parameters.strOpenFailed + "\n" + str(e))
                     # self.serialOpenCloseButton.setDisabled(False)
@@ -1534,11 +1562,19 @@ class SerialToolUI(object):
         return
 
     def id_format_gen_thread(self):
-        # clear
-        self.TKvariables['未检测标签数'].set(str(0))
-        id_format_gen(self)
+        id_available_dict_clear(self)
+        id_clear_invalid_dict(self)
+        id_total_dict_clear(self)
+        id_format_gen_reg(self)
         pass
 
+    def id_format_gen_reg_reset_thread(self):
+        # id_format_gen_reg_reset(self)
+        id_available_dict_clear(self)
+        id_clear_invalid_dict(self)
+        id_total_dict_clear(self)
+        id_format_gen_reg(self)
+        pass
 
 if __name__ == '__main__':
     """
