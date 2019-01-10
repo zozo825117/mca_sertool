@@ -20,17 +20,17 @@ else:
     from tkinter import ttk
 
 import serial.tools.list_ports
-from defaults import defaults
+# from defaults import defaults
 
 import threading
-import time
+# import time
 import os
-from datetime import datetime
+# from datetime import datetime
 # import copy
 import re
 from defaults import *
 from adaptive import *
-from keymaps import *
+# from keymaps import *
 from method import *
 
 g_default_theme = 'default'
@@ -1580,6 +1580,8 @@ if __name__ == '__main__':
     """
     main loop
     """
+    platform = sys.platform
+    print('platform=',platform)
     root = tk.Tk()
     # root = tkthemes.ThemedTk()
     # root.set_theme("radiance")  # Sets an available theme
