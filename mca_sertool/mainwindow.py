@@ -3,8 +3,9 @@
 
 import sys
 
-#TODO HEX数据无法添加标签
-#TODO 生成ID速度问题
+# TODO(zozo) HEX数据无法添加标签
+# TODO(zozo) 生成ID速度问题
+
 
 if sys.version_info[0] < 3:
     # If we're executing with Python 2
@@ -23,22 +24,25 @@ import serial.tools.list_ports
 # from defaults import defaults
 
 import threading
-# import time
+import time
 import os
-# from datetime import datetime
+from datetime import datetime
 # import copy
 import re
-from defaults import *
-from adaptive import *
+# from defaults import *
+from mca_sertool import defaults, adaptive, keymaps, method
+
+# from adaptive import *
+# from mca_sertool import adaptive
 # from keymaps import *
-from method import *
+# from method import *
 
 g_default_theme = 'default'
 
 if g_default_theme == 'dark':
-    font = monaco_font
-    font_right_send = monaco_font_9
-    font_label_temp = monaco_font_9
+    font = adaptive.monaco_font
+    font_right_send = adaptive.monaco_font_9
+    font_label_temp = adaptive.monaco_font_9
 else:
     font = None
     font_right_send = None
@@ -175,8 +179,8 @@ class SerialToolUI(object):
 
         self.TKvariables = {}
         # Read in the defaults
-        for key in defaults:
-            self.TKvariables.update({key: tk.StringVar(value=defaults[key])})
+        for key in defaults.defaults:
+            self.TKvariables.update({key: tk.StringVar(value=defaults.defaults[key])})
 
         self.IdFormat = {
             'id_format_str': '',
@@ -193,9 +197,9 @@ class SerialToolUI(object):
             'id_state2_index': 0,
             'id_state2': '',
             'id_chk_type': 'None',
-            IDF_ID_CHK_INDEX: 0,
+            keymaps.IDF_ID_CHK_INDEX: 0,
             'id_chk': '',
-            IDF_ID_CHK_START_INDEX: 0,
+            keymaps.IDF_ID_CHK_START_INDEX: 0,
             'id_chk_str': '',
             'id_r_pattern': '',
             'id_seg_str': '',
@@ -208,7 +212,7 @@ class SerialToolUI(object):
             'id_id': {
                 'sn': '',
                 'rssi': '',
-                IDDICT_COUNT: 1,
+                keymaps.IDDICT_COUNT: 1,
 
                 '1st_rec_data': "%Y-%m-%d %H:%M:%S.%f')[:-3]",
                 '1st_rec_time': "%Y-%m-%d %H:%M:%S.%f')[:-3]",
@@ -756,12 +760,12 @@ class SerialToolUI(object):
         #                                                    font=font_label_temp)
 
         self.id_format_frame_len_entry = ttk.Entry(self.id_format_frame,
-                                                   textvariable=self.TKvariables[DEF_FRAME_LEN],
+                                                   textvariable=self.TKvariables[keymaps.DEF_FRAME_LEN],
                                                    font=font_label_temp)
         self.id_format_frame_len_entry.bind('<Button-1 >',
                                             self.id_format_frame_len_entry_event)
 
-        self.TKvariables[DEF_FRAME_LEN].set(len(self.id_format_frame_id_frame_entry.get()))
+        self.TKvariables[keymaps.DEF_FRAME_LEN].set(len(self.id_format_frame_id_frame_entry.get()))
         self.id_format_frame_len_entry.config(state='disable')
 
         # __MODES = [
@@ -779,20 +783,22 @@ class SerialToolUI(object):
         #
         #     b.grid(row=index+2, column=1, padx=1, pady=0, sticky="w")
 
-        frame_check_type = [CHECK_TYPE_NONE, CHECK_TYPE_CRC, CHECK_TYPE_2CRC,
-                            CHECK_TYPE_SUM, CHECK_TYPE_2SUM, CHECK_TYPE_XOR, CHECK_TYPE_2XOR]
+        frame_check_type = [keymaps.CHECK_TYPE_NONE, keymaps.CHECK_TYPE_CRC,
+                            keymaps.CHECK_TYPE_2CRC,
+                            keymaps.CHECK_TYPE_SUM, keymaps.CHECK_TYPE_2SUM,
+                            keymaps.CHECK_TYPE_XOR, keymaps.CHECK_TYPE_2XOR]
         self.id_string_combobox_frame_check = ttk.Combobox(self.id_format_frame,
                                                            values=frame_check_type,
-                                                           textvariable=self.TKvariables[DEF_CHECK])
+                                                           textvariable=self.TKvariables[keymaps.DEF_CHECK])
         self.id_string_combobox_frame_check.current(0)
 
         ah = ["dec", "hex"]
         self.id_string_combobox_frame_type = ttk.Combobox(self.id_format_frame,
                                                           values=ah,
-                                                          textvariable=self.TKvariables[def_id_type])
+                                                          textvariable=self.TKvariables[keymaps.DEF_ID_TYPE])
         self.id_string_combobox_frame_type.current(1)
         self.id_format_id_check_entry = ttk.Entry(self.id_format_frame,
-                                                  textvariable=self.TKvariables[DEF_CHECK_TYPE],
+                                                  textvariable=self.TKvariables[keymaps.DEF_CHECK_TYPE],
                                                   font=font_label_temp)
         self.id_format_id_check_entry.bind(
             "<Button-3>",
@@ -821,7 +827,7 @@ class SerialToolUI(object):
                                                 font=font)
 
         self.id_format_restart_btn.bind('<Button-1 >',
-                                    self.id_format_restart_btn_event)
+                                        self.id_format_restart_btn_event)
 
         self.id_format_id_ex = tk.Text(self.id_format_frame,
                                        fg='#ABB2B9',
@@ -963,7 +969,7 @@ class SerialToolUI(object):
 
         self.tag_info_available_label_num_entry = ttk.Entry(
             self.frm_right_tag_info_available,
-            textvariable=self.TKvariables[DEF_AVAILABLE_ID_NUM],
+            textvariable=self.TKvariables[keymaps.DEF_AVAILABLE_ID_NUM],
             font=font_label_temp)
 
         self.tag_info_available_text_frame = ttk.LabelFrame(
@@ -1020,7 +1026,7 @@ class SerialToolUI(object):
 
         self.tag_info_invalid_label_num_entry = ttk.Entry(
             self.frm_right_tag_info_invalid,
-            textvariable=self.TKvariables[DEF_INVALID_ID_NUM],
+            textvariable=self.TKvariables[keymaps.DEF_INVALID_ID_NUM],
             font=font_label_temp)
 
         self.tag_info_invalid_text_frame = ttk.LabelFrame(self.frm_right_tag_info_invalid)
@@ -1075,7 +1081,7 @@ class SerialToolUI(object):
 
         self.tag_info_total_label_num_entry = ttk.Entry(
             self.frm_right_tag_info_total,
-            textvariable=self.TKvariables[DEF_TOTAL_ID_NUM],
+            textvariable=self.TKvariables[keymaps.DEF_TOTAL_ID_NUM],
             font=font_label_temp)
 
         self.tag_info_total_text_frame = ttk.LabelFrame(self.frm_right_tag_info_total)
@@ -1136,7 +1142,7 @@ class SerialToolUI(object):
             s = s.zfill(8)
             s = str1.replace('xxxxxxxx', s)
             # start = datetime.now()
-            start = time.time()
+            # start = time.time()
             self.tag_info_total_listbox.insert(tk.END, s)
             self.tag_info_total_listbox.see(tk.END)
             # print('count %d leedting = %fms' %
@@ -1144,8 +1150,8 @@ class SerialToolUI(object):
             # time.sleep(0.009)
             # t = time.time()
             # end = datetime.now()
-            end = time.time()
-            print('count %d leedting = %5fs' % (i, (end - start)))
+            # end = time.time()
+            # print('count %d leedting = %5fs' % (i, (end - start)))
             # print('count %d leedting = %ss' % (i, (end - start)))
 
         print(self.tag_info_total_listbox.get("1.0", tk.END))
@@ -1366,7 +1372,7 @@ class SerialToolUI(object):
             s = self.id_format_frame_id_frame_entry.get()
             s = s.replace(' ', '')
             s = s.replace('|', '')
-            self.TKvariables[DEF_FRAME_LEN].set(len(s))
+            self.TKvariables[keymaps.DEF_FRAME_LEN].set(len(s))
             self.id_format_frame_len_entry.config(state='disable')
 
     def id_format_id_type_entry_event(self):
@@ -1396,7 +1402,7 @@ class SerialToolUI(object):
             return
 
     def id_format_frame_type_radiobutton_cb(self):
-        print('id_format_frame_type=%d' % int(self.TKvariables[def_id_type].get()))
+        print('id_format_frame_type=%d' % int(self.TKvariables[keymaps.DEF_ID_TYPE].get()))
 
     def log_notebook_frame1_scrollbar_event(self, event):
         print(datetime.now().strftime('%H:%M:%S.%f')[:-3],
@@ -1404,16 +1410,16 @@ class SerialToolUI(object):
               % (event.x, event.y, event.type, type(event.type)))
 
         if str(event.type) == 'Motion':
-            self.variables[var_dataLogScrollStop] = True
-            self.variables[var_dataLogScrollStopTime] = time.time()
-            print('time type=%s time=%5f' % (type(self.variables[var_dataLogScrollStopTime])
-                                             , self.variables[var_dataLogScrollStopTime]))
+            self.variables[keymaps.var_dataLogScrollStop] = True
+            self.variables[keymaps.var_dataLogScrollStopTime] = time.time()
+            print('time type=%s time=%5f' % (type(self.variables[keymaps.var_dataLogScrollStopTime]),
+                                             self.variables[keymaps.var_dataLogScrollStopTime]))
 
     def receive_data_thread(self):
-        self.variables[var_receiveProgressStop] = False
+        self.variables[keymaps.var_receiveProgressStop] = False
         self.timeLastReceive = time.time()
 
-        while not self.variables[var_receiveProgressStop]:
+        while not self.variables[keymaps.var_receiveProgressStop]:
             try:
                 # length = self.com.in_waiting
                 # length = max(1, min(2048, self.com.in_waiting))
@@ -1438,7 +1444,7 @@ class SerialToolUI(object):
 
                     # hex
                     if int(self.TKvariables['rec_hex_ascii'].get()):
-                        str_received = asciib_to_hexstring(rbytes)
+                        str_received = method.asciib_to_hexstring(rbytes)
                         # self.receiveUpdateSignal.emit(str_received)
                         self.log_notebook_frame1_data.insert(tk.END, str_received)
                         # self.log_notebook_frame1_data.see(tk.END)
@@ -1449,16 +1455,16 @@ class SerialToolUI(object):
                             '[' + datetime.now().strftime('%H:%M:%S.%f')[:-3] + '] ' + \
                             str_received + '\n'
 
-                        rec_update_log_ui(self, log)
+                        method.rec_update_log_ui(self, log)
                         # self.log_notebook_frame1_data.insert(tk.END, log)
                         # # end = time.time()
                         # # print('rec leedting = %5fs' % (end - start))
                         #
-                        # if self.variables[var_dataLogScrollStop]:
-                        #     if time.time() - self.variables[var_dataLogScrollStopTime] > \
-                        #             self.variables[var_dataLogScrollStopDelayTime]:
-                        #         self.variables[var_dataLogScrollStop] = False
-                        # if not self.variables[var_dataLogScrollStop]:
+                        # if self.variables[keymaps.var_dataLogScrollStop]:
+                        #     if time.time() - self.variables[keymaps.var_dataLogScrollStopTime] > \
+                        #             self.variables[keymaps.var_dataLogScrollStopDelayTime]:
+                        #         self.variables[keymaps.var_dataLogScrollStop] = False
+                        # if not self.variables[keymaps.var_dataLogScrollStop]:
                         #     self.log_notebook_frame1_data.see(tk.END)
 
                         # if (int(self.TKvariables['linefeed'].get())) == 1:
@@ -1476,14 +1482,14 @@ class SerialToolUI(object):
                     # print('rec set format=%s,type str:%s' % (self.TKvariables['rec_hex_ascii'].get(),
                     #                                          type(str_received)))
                     if self.IdFormat['id_format_str'] is not '':
-                        id_format_check_process(self,str_received)
+                        method.id_format_check_process(self, str_received)
 
                     self.timeLastReceive = time.time()
 
                 # time.sleep(0.001)
 
             except Exception as e:
-                com_close(self)
+                method.com_close(self)
                 # print("receiveData error")
                 # if self.com.is_open and not self.serialPortCombobox.isEnabled():
                 # self.open_close_serial()
@@ -1497,7 +1503,7 @@ class SerialToolUI(object):
     def open_close_serial_thread(self):
 
         if self.com.is_open:
-            com_close(self)
+            method.com_close(self)
         else:
             if self.TKvariables['serial_port'].get() == '':
                 messagebox.showerror(message='Select a COM port!')
@@ -1547,7 +1553,7 @@ class SerialToolUI(object):
                     self.log_notebook_frame1_data.delete(1.0, tk.END)
 
                 except Exception as e:
-                    self.variables[var_receiveProgressStop] = True
+                    self.variables[keymaps.var_receiveProgressStop] = True
                     self.com.close()
                     self.frm_status_label.config(text='Closed', foreground='#C0392B')
                     # self.receiveProgressStop = True
@@ -1562,26 +1568,35 @@ class SerialToolUI(object):
         return
 
     def id_format_gen_thread(self):
-        id_available_dict_clear(self)
-        id_clear_invalid_dict(self)
-        id_total_dict_clear(self)
-        id_format_gen_reg(self)
+        method.id_available_dict_clear(self)
+        method.id_clear_invalid_dict(self)
+        method.id_total_dict_clear(self)
+        method.id_format_gen_reg(self)
         pass
 
     def id_format_gen_reg_reset_thread(self):
         # id_format_gen_reg_reset(self)
-        id_available_dict_clear(self)
-        id_clear_invalid_dict(self)
-        id_total_dict_clear(self)
-        id_format_gen_reg(self)
+        method.id_available_dict_clear(self)
+        method.id_clear_invalid_dict(self)
+        method.id_total_dict_clear(self)
+        method.id_format_gen_reg(self)
         pass
 
-if __name__ == '__main__':
+def main():
     """
     main loop
     """
     platform = sys.platform
-    print('platform=',platform)
+    print('platform=', platform)
+    pathDirList = sys.argv[0].replace("\\", "/").split("/")
+    print('pathDirList', pathDirList)
+    pathDirList.pop()
+    _data_path = os.path.abspath("/".join(str(i) for i in pathDirList))
+    if not os.path.exists(_data_path + '\\' + "logo.ico"):
+        pathDirList.pop()
+        _data_path = os.path.abspath("/".join(str(i) for i in pathDirList))
+    logo_file = _data_path + '\\' + "logo.ico"
+    print('pathDirList', pathDirList, '_data_path', _data_path)
     root = tk.Tk()
     # root = tkthemes.ThemedTk()
     # root.set_theme("radiance")  # Sets an available theme
@@ -1602,7 +1617,7 @@ if __name__ == '__main__':
     #     combostyle.theme_use('alt')
 
     root.title("MCA4-Tool")
-    root.iconbitmap('..\\logo.ico')
+    root.iconbitmap(logo_file)
     root.geometry("900x700")
     # root.maxsize(1280, 1920)
     # root.minsize(1024, 768)
@@ -1613,3 +1628,6 @@ if __name__ == '__main__':
     # root.resizable(False, False)
 
     root.mainloop()
+
+if __name__ == '__main__':
+    main()

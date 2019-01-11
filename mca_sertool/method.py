@@ -9,27 +9,28 @@ from datetime import datetime
 import time
 import copy
 from operator import itemgetter
-from keymaps import *
+# from keymaps import *
+from mca_sertool import keymaps
 
 
 def print_to_debug_log(tag, ids, key_dict):
-    if tag == LOG_DATA_TAG_WORNG_TAG:
+    if tag == keymaps.LOG_DATA_TAG_WORNG_TAG:
         s = '[' + datetime.now().strftime('%H:%M:%S.%f')[:-3] + '] ' + \
             "%s ID:%s " % (tag, ids)
     else:
         # s = '[' + datetime.now().strftime('%H:%M:%S.%f')[:-3] + '] ' + \
         #     "%s ID:%s count=%d 1st_time=%s " % (tag,
         #                                         ids,
-        #                                         key_dict[IDDICT_COUNT],
-        #                                         key_dict[IDDICT_1ST_REC_TIME])
+        #                                         key_dict[keymaps.IDDICT_COUNT],
+        #                                         key_dict[keymaps.IDDICT_1ST_REC_TIME])
         s = '[' + datetime.now().strftime('%H:%M:%S.%f')[:-3] + '] ' + \
             "%s ID:%s count=%d " % (tag,
                                     ids,
-                                    key_dict[IDDICT_COUNT])
-        if key_dict.__contains__(IDDICT_SN):
-            s = s + 'sn = %s ' % key_dict[IDDICT_SN]
-        if key_dict.__contains__(IDDICT_RSSI):
-            s = s + 'rssi = %s ' % key_dict[IDDICT_RSSI]
+                                    key_dict[keymaps.IDDICT_COUNT])
+        if key_dict.__contains__(keymaps.IDDICT_SN):
+            s = s + 'sn = %s ' % key_dict[keymaps.IDDICT_SN]
+        if key_dict.__contains__(keymaps.IDDICT_RSSI):
+            s = s + 'rssi = %s ' % key_dict[keymaps.IDDICT_RSSI]
 
     s = s + '\n'
     return s
@@ -46,6 +47,7 @@ def asciib_to_hexstring(strb):
     return re.sub(r"(?<=\w)(?=(?:\w\w)+$)", " ", str_hex.decode()) + " "
 
 
+# TODO(wrq) 补全校验方法
 def id_check_crc(id_str, check_str_index, check_index, check_str_length):
     return False
 
@@ -81,85 +83,85 @@ def id_check_2xor(id_str, check_str_index, check_index, check_str_length):
 
 
 def id_check_method(parent, id_str):
-    if parent.IdFormat[IDF_ID_CHK_TYPE] == CHECK_TYPE_CRC:
+    if parent.IdFormat[keymaps.IDF_ID_CHK_TYPE] == keymaps.CHECK_TYPE_CRC:
         return False
-    elif parent.IdFormat[IDF_ID_CHK_TYPE] == CHECK_TYPE_2CRC:
+    elif parent.IdFormat[keymaps.IDF_ID_CHK_TYPE] == keymaps.CHECK_TYPE_2CRC:
         return False
-    elif parent.IdFormat[IDF_ID_CHK_TYPE] == CHECK_TYPE_SUM:
+    elif parent.IdFormat[keymaps.IDF_ID_CHK_TYPE] == keymaps.CHECK_TYPE_SUM:
         return False
-    elif parent.IdFormat[IDF_ID_CHK_TYPE] == CHECK_TYPE_2SUM:
+    elif parent.IdFormat[keymaps.IDF_ID_CHK_TYPE] == keymaps.CHECK_TYPE_2SUM:
         return False
-    elif parent.IdFormat[IDF_ID_CHK_TYPE] == CHECK_TYPE_XOR:
+    elif parent.IdFormat[keymaps.IDF_ID_CHK_TYPE] == keymaps.CHECK_TYPE_XOR:
 
         return id_check_xor(id_str,
-                            parent.IdFormat[IDF_ID_CHK_START_INDEX],
-                            parent.IdFormat[IDF_ID_CHK_INDEX],
-                            len(parent.IdFormat[IDF_ID_CHK_STR])
+                            parent.IdFormat[keymaps.IDF_ID_CHK_START_INDEX],
+                            parent.IdFormat[keymaps.IDF_ID_CHK_INDEX],
+                            len(parent.IdFormat[keymaps.IDF_ID_CHK_STR])
                             )
 
-    elif parent.IdFormat[DEF_CHECK_TYPE] == CHECK_TYPE_2XOR:
+    elif parent.IdFormat[keymaps.DEF_CHECK_TYPE] == keymaps.CHECK_TYPE_2XOR:
         return False
     else:
         print('unknow id check type!')
         return False
 
 
-def id_add_id_dict(id_line,id_dict, dict_des, dict_tmp):
-    # id_line = id_dict[IDSEGMENT_ID]
+def id_add_id_dict(id_line, id_dict, dict_des, dict_tmp):
+    # id_line = id_dict[keymaps.IDSEGMENT_ID]
 
     if dict_des.setdefault(id_line, None) is None:
         dict_des[id_line] = copy.deepcopy(dict_tmp['id_id'])
-        dict_des[id_line][IdDict_1st_rec_data] = datetime.now().strftime('%Y-%m-%d')
-        dict_des[id_line][IDDICT_1ST_REC_TIME] = datetime.now().strftime('%H:%M:%S.%f')[:-3]
-        dict_des[id_line][IdDict_rec_data] = datetime.now().strftime('%Y-%m-%d')
-        dict_des[id_line][IdDict_rec_time] = datetime.now().strftime('%H:%M:%S.%f')[:-3]
+        dict_des[id_line][keymaps.IdDict_1st_rec_data] = datetime.now().strftime('%Y-%m-%d')
+        dict_des[id_line][keymaps.IDDICT_1ST_REC_TIME] = datetime.now().strftime('%H:%M:%S.%f')[:-3]
+        dict_des[id_line][keymaps.IdDict_rec_data] = datetime.now().strftime('%Y-%m-%d')
+        dict_des[id_line][keymaps.IdDict_rec_time] = datetime.now().strftime('%H:%M:%S.%f')[:-3]
         if id_dict is not None:
-            if id_dict.__contains__(IDSEGMENT_NN):
-                sn = id_dict[IDSEGMENT_NN]
+            if id_dict.__contains__(keymaps.IDSEGMENT_NN):
+                sn = id_dict[keymaps.IDSEGMENT_NN]
                 sn = int(sn, 16)
-                dict_des[id_line][IDDICT_SN] = str(sn)
-            if id_dict.__contains__(IDSEGMENT_RR):
-                rssi = id_dict[IDSEGMENT_RR]
+                dict_des[id_line][keymaps.IDDICT_SN] = str(sn)
+            if id_dict.__contains__(keymaps.IDSEGMENT_RR):
+                rssi = id_dict[keymaps.IDSEGMENT_RR]
                 rssi = int(rssi, 16)
-                dict_des[id_line][IDDICT_RSSI] = r'-%ddbm' % rssi
-            if id_dict.__contains__(IDDICT_SN):
-                sn = id_dict[IDDICT_SN]
-                dict_des[id_line][IDDICT_SN] = sn
-            if id_dict.__contains__(IDDICT_RSSI):
-                rssi = id_dict[IDDICT_RSSI]
-                dict_des[id_line][IDDICT_RSSI] = rssi
+                dict_des[id_line][keymaps.IDDICT_RSSI] = r'-%ddbm' % rssi
+            if id_dict.__contains__(keymaps.IDDICT_SN):
+                sn = id_dict[keymaps.IDDICT_SN]
+                dict_des[id_line][keymaps.IDDICT_SN] = sn
+            if id_dict.__contains__(keymaps.IDDICT_RSSI):
+                rssi = id_dict[keymaps.IDDICT_RSSI]
+                dict_des[id_line][keymaps.IDDICT_RSSI] = rssi
         print('new id add:', dict_des)
     else:
 
-        dict_des[id_line][IdDict_rec_data] = datetime.now().strftime('%Y-%m-%d')
-        dict_des[id_line][IdDict_rec_time] = datetime.now().strftime('%H:%M:%S.%f')[:-3]
+        dict_des[id_line][keymaps.IdDict_rec_data] = datetime.now().strftime('%Y-%m-%d')
+        dict_des[id_line][keymaps.IdDict_rec_time] = datetime.now().strftime('%H:%M:%S.%f')[:-3]
         if id_dict is not None:
-            if id_dict.__contains__(IDSEGMENT_NN):
-                sn = id_dict[IDSEGMENT_NN]
+            if id_dict.__contains__(keymaps.IDSEGMENT_NN):
+                sn = id_dict[keymaps.IDSEGMENT_NN]
                 sn = int(sn, 16)
-                dict_des[id_line][IDDICT_SN] = str(sn)
-            if id_dict.__contains__(IDSEGMENT_RR):
-                rssi = id_dict[IDSEGMENT_RR]
+                dict_des[id_line][keymaps.IDDICT_SN] = str(sn)
+            if id_dict.__contains__(keymaps.IDSEGMENT_RR):
+                rssi = id_dict[keymaps.IDSEGMENT_RR]
                 rssi = int(rssi, 16)
-                dict_des[id_line][IDDICT_RSSI] = r'-%ddbm' % rssi
-            if id_dict.__contains__(IDDICT_SN):
-                sn = id_dict[IDDICT_SN]
-                dict_des[id_line][IDDICT_SN] = sn
-            if id_dict.__contains__(IDDICT_RSSI):
-                rssi = id_dict[IDDICT_RSSI]
-                dict_des[id_line][IDDICT_RSSI] = rssi
-            if id_dict.__contains__(IDDICT_COUNT):
-                dict_des[id_line][IDDICT_COUNT] += id_dict[IDDICT_COUNT]
+                dict_des[id_line][keymaps.IDDICT_RSSI] = r'-%ddbm' % rssi
+            if id_dict.__contains__(keymaps.IDDICT_SN):
+                sn = id_dict[keymaps.IDDICT_SN]
+                dict_des[id_line][keymaps.IDDICT_SN] = sn
+            if id_dict.__contains__(keymaps.IDDICT_RSSI):
+                rssi = id_dict[keymaps.IDDICT_RSSI]
+                dict_des[id_line][keymaps.IDDICT_RSSI] = rssi
+            if id_dict.__contains__(keymaps.IDDICT_COUNT):
+                dict_des[id_line][keymaps.IDDICT_COUNT] += id_dict[keymaps.IDDICT_COUNT]
             else:
-                dict_des[id_line][IDDICT_COUNT] +=1
+                dict_des[id_line][keymaps.IDDICT_COUNT] += 1
 
         print('has id :', dict_des)
 
 
 def id_update_ui_log_data(parent, id_dict, id_id, tag):
-    if tag == LOG_DATA_TAG_WORNG_TAG:
+    if tag == keymaps.LOG_DATA_TAG_WORNG_TAG:
         log = print_to_debug_log(tag,
-                                 id_dict[IDSEGMENT_ID],
+                                 id_dict[keymaps.IDSEGMENT_ID],
                                  id_dict)
         pass
     else:
@@ -169,16 +171,16 @@ def id_update_ui_log_data(parent, id_dict, id_id, tag):
 
     parent.log_notebook_frame2_data.insert(tk.END, log)
 
-    if parent.variables[var_dataLogScrollStop]:
-        if time.time() - parent.variables[var_dataLogScrollStopTime] > \
-                var_dataLogScrollStopDelayTime:
-            parent.variables[var_dataLogScrollStop] = False
+    if parent.variables[keymaps.var_dataLogScrollStop]:
+        if time.time() - parent.variables[keymaps.var_dataLogScrollStopTime] > \
+                keymaps.var_dataLogScrollStopDelayTime:
+            parent.variables[keymaps.var_dataLogScrollStop] = False
     else:
-        if time.time() - parent.timeLastReceive > var_dataLogDelayTime:
-            parent.variables[var_dataLogScrollStop] = False
-    if not parent.variables[var_dataLogScrollStop]:
+        if time.time() - parent.timeLastReceive > keymaps.var_dataLogDelayTime:
+            parent.variables[keymaps.var_dataLogScrollStop] = False
+    if not parent.variables[keymaps.var_dataLogScrollStop]:
         parent.log_notebook_frame2_data.see(tk.END)
-        parent.variables[var_dataLogScrollStop] = True
+        parent.variables[keymaps.var_dataLogScrollStop] = True
 
 
 def id_dict_updata_ui(parent, id_dict_buf, id_dict_total, id_dict_av, id_dict_inv):
@@ -187,18 +189,18 @@ def id_dict_updata_ui(parent, id_dict_buf, id_dict_total, id_dict_av, id_dict_in
     b_id_inds = []
     for id_id in id_keys:
         id_id_dict_buf = id_dict_buf[id_id]
-        if parent.IdFormat[IDF_ID_ID_H_OR_A] == 'hex':
+        if parent.IdFormat[keymaps.IDF_ID_ID_H_OR_A] == 'hex':
             b_id_id = int(id_id, 16)
-            b_id_seg_str = int(parent.IdFormat[IdF_id_seg_str], 16)
-            b_id_seg_stp = int(parent.IdFormat[IdF_id_seg_stp], 16)
-            for id_ind in parent.IdFormat[IdF_id_seg_ind]:
+            b_id_seg_str = int(parent.IdFormat[keymaps.IdF_id_seg_str], 16)
+            b_id_seg_stp = int(parent.IdFormat[keymaps.IdF_id_seg_stp], 16)
+            for id_ind in parent.IdFormat[keymaps.IdF_id_seg_ind]:
                 # b_id_inds = b_id_inds.append(int(id_ind, 16))
                 b_id_inds.append(int(id_ind, 16))
         else:
             b_id_id = int(id_id)
-            b_id_seg_str = int(parent.IdFormat[IdF_id_seg_str])
-            b_id_seg_stp = int(parent.IdFormat[IdF_id_seg_stp])
-            for id_ind in parent.IdFormat[IdF_id_seg_ind]:
+            b_id_seg_str = int(parent.IdFormat[keymaps.IdF_id_seg_str])
+            b_id_seg_stp = int(parent.IdFormat[keymaps.IdF_id_seg_stp])
+            for id_ind in parent.IdFormat[keymaps.IdF_id_seg_ind]:
                 # b_id_inds = b_id_inds.append(int(id_ind))
                 b_id_inds.append(int(id_ind))
 
@@ -219,45 +221,21 @@ def id_dict_updata_ui(parent, id_dict_buf, id_dict_total, id_dict_av, id_dict_in
                 start = '%d.0' % (i + 1)
                 end = '%d.0' % (i + 2)
                 parent.tag_info_total_listbox.delete(start, end)
-                count = int(parent.TKvariables[DEF_TOTAL_ID_NUM].get()) - 1
-                parent.TKvariables[DEF_TOTAL_ID_NUM].set(str(count))
+                count = int(parent.TKvariables[keymaps.DEF_TOTAL_ID_NUM].get()) - 1
+                parent.TKvariables[keymaps.DEF_TOTAL_ID_NUM].set(str(count))
                 # add to available dict
                 id_add_id_dict(id_id, id_id_dict_buf, id_dict_av, parent.IdDict)
                 print('IdAvailableDict add')
                 parent.tag_info_available_listbox.insert(tk.END, 'ID:' + id_id + '\n')
-                count = int(parent.TKvariables[DEF_AVAILABLE_ID_NUM].get()) + 1
-                parent.TKvariables[DEF_AVAILABLE_ID_NUM].set(str(count))
-                # add to debug_log
-                # vkey = id_dict_av[id_id]
-                # print('vkey=', vkey)
-                # log = print_to_debug_log('新加入 实际可用标签', id_id, vkey[IDDICT_COUNT],
-                #                          vkey[IDDICT_1ST_REC_TIME])
-                # parent.log_notebook_frame2_data.insert(tk.END, log)
-                # if parent.variables[var_dataLogScrollStop]:
-                #     if time.time() - parent.variables[var_dataLogScrollStopTime] > \
-                #             parent.variables[var_dataLogScrollStopDelayTime]:
-                #         parent.variables[var_dataLogScrollStop] = False
-                # if not parent.variables[var_dataLogScrollStop]:
-                #     parent.log_notebook_frame2_data.see(tk.END)
-                id_update_ui_log_data(parent, id_dict_av, id_id, LOG_DATA_TAG_AV_NEW_TAG)
+                count = int(parent.TKvariables[keymaps.DEF_AVAILABLE_ID_NUM].get()) + 1
+                parent.TKvariables[keymaps.DEF_AVAILABLE_ID_NUM].set(str(count))
+                id_update_ui_log_data(parent, id_dict_av, id_id, keymaps.LOG_DATA_TAG_AV_NEW_TAG)
 
             else:
                 # add to available dict
                 id_add_id_dict(id_id, id_id_dict_buf, id_dict_av, parent.IdDict)
                 print('IdAvailableDict add')
-                # add to debug_log
-                # vkey = id_dict_av[id_id]
-                # print('vkey=', vkey)
-                # log = print_to_debug_log('实际可用标签', id_id, vkey[IDDICT_COUNT],
-                #                          vkey[IDDICT_1ST_REC_TIME])
-                # parent.log_notebook_frame2_data.insert(tk.END, log)
-                # if parent.variables[var_dataLogScrollStop]:
-                #     if time.time() - parent.variables[var_dataLogScrollStopTime] > \
-                #             parent.variables[var_dataLogScrollStopDelayTime]:
-                #         parent.variables[var_dataLogScrollStop] = False
-                # if not parent.variables[var_dataLogScrollStop]:
-                #     parent.log_notebook_frame2_data.see(tk.END)
-                id_update_ui_log_data(parent, id_dict_av, id_id, LOG_DATA_TAG_AV_TAG)
+                id_update_ui_log_data(parent, id_dict_av, id_id, keymaps.LOG_DATA_TAG_AV_TAG)
 
         else:
             keys = list(id_dict_inv.keys())
@@ -265,45 +243,21 @@ def id_dict_updata_ui(parent, id_dict_buf, id_dict_total, id_dict_av, id_dict_in
                 # add to invalid dict
                 id_add_id_dict(id_id, id_id_dict_buf, id_dict_inv, parent.IdDict)
                 print('invalid Dict add')
-                # add to debug_log
-                # vkey = id_dict_inv[id_id]
-                # print('vkey=', vkey)
-                # log = print_to_debug_log('实际无效标签', id_id, vkey[IDDICT_COUNT],
-                #                          vkey[IDDICT_1ST_REC_TIME])
-                # parent.log_notebook_frame2_data.insert(tk.END, log)
-                # if parent.variables[var_dataLogScrollStop]:
-                #     if time.time() - parent.variables[var_dataLogScrollStopTime] > \
-                #             parent.variables[var_dataLogScrollStopDelayTime]:
-                #         parent.variables[var_dataLogScrollStop] = False
-                # if not parent.variables[var_dataLogScrollStop]:
-                #     parent.log_notebook_frame2_data.see(tk.END)
-                id_update_ui_log_data(parent, id_dict_inv, id_id, LOG_DATA_TAG_IN_TAG)
+                id_update_ui_log_data(parent, id_dict_inv, id_id, keymaps.LOG_DATA_TAG_IN_TAG)
             else:
-                count = int(parent.TKvariables[DEF_INVALID_ID_NUM].get()) + 1
-                parent.TKvariables[DEF_INVALID_ID_NUM].set(str(count))
+                count = int(parent.TKvariables[keymaps.DEF_INVALID_ID_NUM].get()) + 1
+                parent.TKvariables[keymaps.DEF_INVALID_ID_NUM].set(str(count))
 
                 # add to invalid dict
                 id_add_id_dict(id_id, id_id_dict_buf, id_dict_inv, parent.IdDict)
                 print('invalid Dict add')
                 parent.tag_info_invalid_listbox.insert(tk.END, 'ID:' + id_id + '\n')
-                # add to debug_log
-                # vkey = id_dict_inv[id_id]
-                # print('vkey=', vkey)
-                # log = print_to_debug_log('新加入 实际无效标签', id_id, vkey[IDDICT_COUNT],
-                #                          vkey[IDDICT_1ST_REC_TIME])
-                # parent.log_notebook_frame2_data.insert(tk.END, log)
-                # if parent.variables[var_dataLogScrollStop]:
-                #     if time.time() - parent.variables[var_dataLogScrollStopTime] > \
-                #             parent.variables[var_dataLogScrollStopDelayTime]:
-                #         parent.variables[var_dataLogScrollStop] = False
-                # if not parent.variables[var_dataLogScrollStop]:
-                #     parent.log_notebook_frame2_data.see(tk.END)
-                id_update_ui_log_data(parent, id_dict_inv, id_id, LOG_DATA_TAG_IN_NEW_TAG)
+                id_update_ui_log_data(parent, id_dict_inv, id_id, keymaps.LOG_DATA_TAG_IN_NEW_TAG)
 
 
 def id_format_check_process(parent, rec_bytes):
     # parent.IdCheckStr += rec_bytes
-    rec_bytes = rec_bytes.replace(' ','')
+    rec_bytes = rec_bytes.replace(' ', '')
     parent.receive_count_without_space += len(rec_bytes)
     print('receive_count_without_space=%d' % parent.receive_count_without_space)
     ics = parent.IdCheckStr
@@ -312,8 +266,8 @@ def id_format_check_process(parent, rec_bytes):
     print('ics=%s' % (ics))
     # str_ind = -1
 
-    id_par = re.compile(parent.IdFormat[IDF_ID_R_PATTERN], re.I)
-    id_len = len(parent.IdFormat[IDF_ID_FORMAT_STR])
+    id_par = re.compile(parent.IdFormat[keymaps.IDF_ID_R_PATTERN], re.I)
+    id_len = len(parent.IdFormat[keymaps.IDF_ID_FORMAT_STR])
 
     if len(ics) >= id_len:
         m = id_par.finditer(ics)
@@ -330,22 +284,22 @@ def id_format_check_process(parent, rec_bytes):
             '''
             检测 id 效验
             '''
-            if id_dict_buf.__contains__(IDSEGMENT_CK):
+            if id_dict_buf.__contains__(keymaps.IDSEGMENT_CK):
                 if id_check_method(parent, ics[ics_str:ics_stp]) is True:
                     # id_id = it.group(2)
-                    id_id = id_dict_buf[IDSEGMENT_ID]
+                    id_id = id_dict_buf[keymaps.IDSEGMENT_ID]
                     id_add_id_dict(id_id, id_dict_buf, parent.IdDictBuf, parent.IdDict)
                     parent.id_correct_data_count += (ics_stp - ics_str)
                     print('id_correct_data_count:%d' % parent.id_correct_data_count)
                 else:
                     id_update_ui_log_data(parent,
                                           id_dict_buf,
-                                          id_dict_buf[IDSEGMENT_ID],
-                                          LOG_DATA_TAG_WORNG_TAG
+                                          id_dict_buf[keymaps.IDSEGMENT_ID],
+                                          keymaps.LOG_DATA_TAG_WORNG_TAG
                                           )
             else:
                 # id_id = it.group(2)
-                id_id = id_dict_buf[IDSEGMENT_ID]
+                id_id = id_dict_buf[keymaps.IDSEGMENT_ID]
                 id_add_id_dict(id_id, id_dict_buf, parent.IdDictBuf, parent.IdDict)
 
         '''
@@ -406,12 +360,12 @@ def check_regex_for_gen(line, par, rows, seg, g_num):
             print('ma:', ma)
             print('ma.groups():', ma.groups())
             print('ma.group():', ma.group(g_num))
-            d = {ID_ROWS_NAME: seg, ID_ROWS_STR: ma.group(g_num),
-                 ID_ROWS_START: ma.start(), 'end': ma.end()}
+            d = {keymaps.ID_ROWS_NAME: seg, keymaps.ID_ROWS_STR: ma.group(g_num),
+                 keymaps.ID_ROWS_START: ma.start(), 'end': ma.end()}
             rows.append(d)
             # rows[seg] = ma.start()
             # rows['str'] = ma.group(g_num)
-            # r_dict[seg][ID_ROWS_START] = ma.start()
+            # r_dict[seg][keymaps.ID_ROWS_START] = ma.start()
             # r_dict[seg].append(ma.group(g_num))
             # r_dict[seg].append(ma.start())
             # r_dict[seg].append(ma.end())
@@ -423,10 +377,11 @@ def check_regex_for_gen(line, par, rows, seg, g_num):
             print('false count:', len(ma))
             return False
     except Exception as e:
-        print('check_regex_for_gen error:',e)
+        print('check_regex_for_gen error:', e)
         messagebox.showerror(message=('check_regex_for_gen error:', e))
 
-def id_format_interprete(parent, rows):
+
+def id_format_parser(parent, rows):
     try:
         id_format = parent.id_format_frame_id_frame_entry.get()
         id_format = id_format.replace(' ', '')
@@ -443,44 +398,44 @@ def id_format_interprete(parent, rows):
             return False
 
         p = r'^([^\|]{3,30})\|'
-        if not check_regex_for_gen(id_format, p, rows, IDSEGMENT_HEAD, 1):
+        if not check_regex_for_gen(id_format, p, rows, keymaps.IDSEGMENT_HEAD, 1):
             print('1 ID帧头格式错误！')
             messagebox.showerror(message='ID帧头格式错误！')
             return False
 
-        id_start = rows[len(rows) - 1][ID_ROWS_STR]
+        id_start = rows[len(rows) - 1][keymaps.ID_ROWS_STR]
         id_format = id_format.replace('|', '')
 
-        parent.IdFormat[IDF_ID_FORMAT_STR] = id_format
-        parent.IdFormat[IdF_id_start] = id_start
+        parent.IdFormat[keymaps.IDF_ID_FORMAT_STR] = id_format
+        parent.IdFormat[keymaps.IdF_id_start] = id_start
 
         '''
         检测 ID 长度
         '''
         p = r'[x]{3,30}'
-        if not check_regex_for_gen(id_format, p, rows, IDSEGMENT_ID, 0):
+        if not check_regex_for_gen(id_format, p, rows, keymaps.IDSEGMENT_ID, 0):
             print('1 ID号格式错误！')
             messagebox.showerror(message='ID号格式错误！')
             return False
 
-        id_id = rows[len(rows) - 1][ID_ROWS_STR]
-        id_id_index = rows[len(rows) - 1][ID_ROWS_START]
-        is_hex = parent.TKvariables[def_id_type].get()
+        id_id = rows[len(rows) - 1][keymaps.ID_ROWS_STR]
+        id_id_index = rows[len(rows) - 1][keymaps.ID_ROWS_START]
+        is_hex = parent.TKvariables[keymaps.DEF_ID_TYPE].get()
 
-        parent.IdFormat[IdF_id_id] = id_id
-        parent.IdFormat[IdF_id_id_index] = id_id_index
-        parent.IdFormat[IDF_ID_ID_H_OR_A] = is_hex
+        parent.IdFormat[keymaps.IdF_id_id] = id_id
+        parent.IdFormat[keymaps.IdF_id_id_index] = id_id_index
+        parent.IdFormat[keymaps.IDF_ID_ID_H_OR_A] = is_hex
         '''
         检测 CHK
         '''
-        chk = parent.TKvariables[DEF_CHECK].get()
-        id_chk_str = parent.TKvariables[DEF_CHECK_TYPE].get()
+        chk = parent.TKvariables[keymaps.DEF_CHECK].get()
+        id_chk_str = parent.TKvariables[keymaps.DEF_CHECK_TYPE].get()
         id_chk_str = id_chk_str.replace('|', '')
         id_chk_str = id_chk_str.replace(' ', '')
         id_chk_str = id_chk_str.upper()
         print('id_chk_str', id_chk_str)
 
-        if chk != CHECK_TYPE_NONE:
+        if chk != keymaps.CHECK_TYPE_NONE:
             if id_chk_str is not None:
                 id_chk_start_index = id_format.find(id_chk_str)
                 if id_chk_start_index != -1:
@@ -490,17 +445,17 @@ def id_format_interprete(parent, rows):
                         chk_len = 1
 
                     p = r'[k]{%d}' % (chk_len * 2)
-                    if not check_regex_for_gen(id_format, p, rows, IDSEGMENT_CK, 0):
+                    if not check_regex_for_gen(id_format, p, rows, keymaps.IDSEGMENT_CK, 0):
                         print('1 ID效验格式错误！')
                         messagebox.showerror(message='ID效验格式错误！')
                         return False
-                    id_chk = rows[len(rows) - 1][ID_ROWS_STR]
-                    id_chk_index = rows[len(rows) - 1][ID_ROWS_START]
-                    parent.IdFormat[IDF_ID_CHK_TYPE] = chk
-                    parent.IdFormat[IDF_ID_CHK_INDEX] = id_chk_index
-                    parent.IdFormat[IdF_id_chk] = id_chk
-                    parent.IdFormat[IDF_ID_CHK_STR] = id_chk_str
-                    parent.IdFormat[IDF_ID_CHK_START_INDEX] = id_chk_start_index
+                    id_chk = rows[len(rows) - 1][keymaps.ID_ROWS_STR]
+                    id_chk_index = rows[len(rows) - 1][keymaps.ID_ROWS_START]
+                    parent.IdFormat[keymaps.IDF_ID_CHK_TYPE] = chk
+                    parent.IdFormat[keymaps.IDF_ID_CHK_INDEX] = id_chk_index
+                    parent.IdFormat[keymaps.IdF_id_chk] = id_chk
+                    parent.IdFormat[keymaps.IDF_ID_CHK_STR] = id_chk_str
+                    parent.IdFormat[keymaps.IDF_ID_CHK_START_INDEX] = id_chk_start_index
                 else:
                     print('1 ID效验格式错误！')
                     messagebox.showerror(message='ID效验格式错误！')
@@ -514,36 +469,37 @@ def id_format_interprete(parent, rows):
         检测 RSSI
         '''
         p = r'[r]{2}'
-        if not check_regex_for_gen(id_format, p, rows, IDSEGMENT_RR, 0):
+        if not check_regex_for_gen(id_format, p, rows, keymaps.IDSEGMENT_RR, 0):
             print('no Rssi')
             pass
         else:
-            id_rssi = rows[len(rows) - 1][ID_ROWS_STR]
-            id_rssi_index = rows[len(rows) - 1][ID_ROWS_START]
-            parent.IdFormat[IdF_id_rssi] = id_rssi
-            parent.IdFormat[IdF_id_rssi_index] = id_rssi_index
+            id_rssi = rows[len(rows) - 1][keymaps.ID_ROWS_STR]
+            id_rssi_index = rows[len(rows) - 1][keymaps.ID_ROWS_START]
+            parent.IdFormat[keymaps.IdF_id_rssi] = id_rssi
+            parent.IdFormat[keymaps.IdF_id_rssi_index] = id_rssi_index
         '''
         检测 SN
         '''
         p = r'[n]{2}'
-        if not check_regex_for_gen(id_format, p, rows, IDSEGMENT_NN, 0):
+        if not check_regex_for_gen(id_format, p, rows, keymaps.IDSEGMENT_NN, 0):
             print('no sn')
             pass
         else:
-            id_nn = rows[len(rows) - 1][ID_ROWS_STR]
-            id_nn_index = rows[len(rows) - 1][ID_ROWS_START]
-            parent.IdFormat[IdF_id_rssi] = id_nn
-            parent.IdFormat[IdF_id_nn_index] = id_nn_index
+            id_nn = rows[len(rows) - 1][keymaps.ID_ROWS_STR]
+            id_nn_index = rows[len(rows) - 1][keymaps.ID_ROWS_START]
+            parent.IdFormat[keymaps.IdF_id_rssi] = id_nn
+            parent.IdFormat[keymaps.IdF_id_nn_index] = id_nn_index
 
         # print(rows)
-        # rows = sorted(rows, key=itemgetter(ID_ROWS_START))
+        # rows = sorted(rows, key=itemgetter(keymaps.ID_ROWS_START))
 
         # print(rows)
-        print('parent.IdFormat',parent.IdFormat)
+        print('parent.IdFormat', parent.IdFormat)
         return True
     except Exception as e:
-        print('id_format_interprete error:',e)
+        print('id_format_interprete error:', e)
         messagebox.showerror(message=('id_format_interprete error:', e))
+
 
 def id_format_pattern_gen(parent, rows):
     """
@@ -555,16 +511,16 @@ def id_format_pattern_gen(parent, rows):
     try:
         # print('row in gen:', rows)
         for d in rows:
-            print('d[ID_ROWS_NAME]', d[ID_ROWS_NAME])
-            if d[ID_ROWS_NAME] == IDSEGMENT_HEAD:
-                s = r'(?P<%s>%s)' % (d[ID_ROWS_NAME], parent.IdFormat[IdF_id_start])
-                last_end = d[ID_ROWS_END] - 1
+            print('d[keymaps.ID_ROWS_NAME]', d[keymaps.ID_ROWS_NAME])
+            if d[keymaps.ID_ROWS_NAME] == keymaps.IDSEGMENT_HEAD:
+                s = r'(?P<%s>%s)' % (d[keymaps.ID_ROWS_NAME], parent.IdFormat[keymaps.IdF_id_start])
+                last_end = d[keymaps.ID_ROWS_END] - 1
             else:
-                if d[ID_ROWS_START] > last_end:
-                    s = r'[0-9a-z]{%d}' % (d[ID_ROWS_START] - last_end)
-                s = s + r'(?P<%s>[0-9a-z]{%d})' % (d[ID_ROWS_NAME],
-                                                   (d[ID_ROWS_END] - d[ID_ROWS_START]))
-                last_end = d[ID_ROWS_END]
+                if d[keymaps.ID_ROWS_START] > last_end:
+                    s = r'[0-9a-z]{%d}' % (d[keymaps.ID_ROWS_START] - last_end)
+                s = s + r'(?P<%s>[0-9a-z]{%d})' % (d[keymaps.ID_ROWS_NAME],
+                                                   (d[keymaps.ID_ROWS_END] - d[keymaps.ID_ROWS_START]))
+                last_end = d[keymaps.ID_ROWS_END]
             par = par + s
             s = ''
 
@@ -577,21 +533,21 @@ def id_format_pattern_gen(parent, rows):
 
 def id_available_dict_clear(parent):
     # clear
-    parent.TKvariables[DEF_AVAILABLE_ID_NUM].set(str(0))
+    parent.TKvariables[keymaps.DEF_AVAILABLE_ID_NUM].set(str(0))
     parent.IdAvailableDict.clear()
     parent.tag_info_available_listbox.delete(1.0, tk.END)
 
 
 def id_clear_invalid_dict(parent):
     # clear
-    parent.TKvariables[DEF_INVALID_ID_NUM].set(str(0))
+    parent.TKvariables[keymaps.DEF_INVALID_ID_NUM].set(str(0))
     parent.IdInvalidDict.clear()
     parent.tag_info_invalid_listbox.delete(1.0, tk.END)
 
 
 def id_total_dict_clear(parent):
     # clear
-    parent.TKvariables[DEF_TOTAL_ID_NUM].set(str(0))
+    parent.TKvariables[keymaps.DEF_TOTAL_ID_NUM].set(str(0))
     parent.IdTotalDict.clear()
     parent.tag_info_total_listbox.delete(1.0, tk.END)
 
@@ -603,20 +559,20 @@ def id_format_gen_reg(parent):
 
     id_seg_rows = []
 
-    if not id_format_interprete(parent, id_seg_rows):
+    if not id_format_parser(parent, id_seg_rows):
         print('id_format_interprete 错误！')
         # messagebox.showerror(message='ID效验格式错误！')
         return False
     else:
-        rows_by_start = sorted(id_seg_rows, key=itemgetter(ID_ROWS_START))
+        rows_by_start = sorted(id_seg_rows, key=itemgetter(keymaps.ID_ROWS_START))
         print(rows_by_start)
         par = id_format_pattern_gen(parent, rows_by_start)
-        parent.IdFormat[IDF_ID_R_PATTERN] = par
+        parent.IdFormat[keymaps.IDF_ID_R_PATTERN] = par
 
     '''
     检测 ID 号段
     '''
-    id_seg = parent.TKvariables[DEF_ID].get()
+    id_seg = parent.TKvariables[keymaps.DEF_ID].get()
 
     id_seg = id_seg.replace(' ', '')
 
@@ -730,14 +686,12 @@ def id_format_gen_reg(parent):
                     if seg_str <= estr <= seg_stp:
                         seg_ind.remove(estr)
 
-
-
         id_id_list = [id_id for id_id in range(seg_str, seg_stp + 1)]
 
         id_id_list.extend(seg_ind)
         print(id_id_list)
 
-        # id_format_str_tmp = parent.IdFormat[IdF_IdF_id_format_str]
+        # id_format_str_tmp = parent.IdFormat[IdF_keymaps.IDF_ID_FORMAT_STR]
         # id_id_tmp = parent.IdFormat['id_id']
         # count = 0
         for index, id_id in enumerate(id_id_list):
@@ -755,13 +709,13 @@ def id_format_gen_reg(parent):
             id_add_id_dict(id_str, None, parent.IdTotalDict, parent.IdDict)
             print('IdTotalDict add')
             parent.tag_info_total_listbox.insert(tk.END, 'ID:' + id_str + '\n')
-            count = int(parent.TKvariables[DEF_TOTAL_ID_NUM].get()) + 1
-            parent.TKvariables[DEF_TOTAL_ID_NUM].set(str(count))
+            count = int(parent.TKvariables[keymaps.DEF_TOTAL_ID_NUM].get()) + 1
+            parent.TKvariables[keymaps.DEF_TOTAL_ID_NUM].set(str(count))
             # add debug log
             # vkey = parent.IdTotalDict[id_str]
             # print('vkey=', vkey)
-            # log = print_to_debug_log('未检测标签', id_str, vkey[IDDICT_COUNT],
-            #                          vkey[IDDICT_1ST_REC_TIME])
+            # log = print_to_debug_log('未检测标签', id_str, vkey[keymaps.IDDICT_COUNT],
+            #                          vkey[keymaps.IDDICT_1ST_REC_TIME])
             #
             # parent.log_notebook_frame2_data.insert(tk.END, log)
     except Exception as e:
@@ -773,7 +727,7 @@ def id_format_gen_reg(parent):
 
 
 def com_close(parent):
-    parent.variables[var_receiveProgressStop] = True
+    parent.variables[keymaps.var_receiveProgressStop] = True
     parent.receiveCount = 0
     parent.receive_count_without_space = 0
     parent.id_data_count = 0
@@ -787,13 +741,13 @@ def rec_update_log_ui(parent, log):
     # end = time.time()
     # print('rec leedting = %5fs' % (end - start))
 
-    if parent.variables[var_dataLogScrollStop]:
-        if time.time() - parent.variables[var_dataLogScrollStopTime] > \
-                var_dataLogScrollStopDelayTime:
-            parent.variables[var_dataLogScrollStop] = False
+    if parent.variables[keymaps.var_dataLogScrollStop]:
+        if time.time() - parent.variables[keymaps.var_dataLogScrollStopTime] > \
+                keymaps.var_dataLogScrollStopDelayTime:
+            parent.variables[keymaps.var_dataLogScrollStop] = False
     else:
-        if time.time() - parent.timeLastReceive > var_dataLogDelayTime:
-            parent.variables[var_dataLogScrollStop] = False
-    if not parent.variables[var_dataLogScrollStop]:
+        if time.time() - parent.timeLastReceive > keymaps.var_dataLogDelayTime:
+            parent.variables[keymaps.var_dataLogScrollStop] = False
+    if not parent.variables[keymaps.var_dataLogScrollStop]:
         parent.log_notebook_frame1_data.see(tk.END)
-        parent.variables[var_dataLogScrollStop] = True
+        parent.variables[keymaps.var_dataLogScrollStop] = True

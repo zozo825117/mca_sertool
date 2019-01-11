@@ -13,7 +13,7 @@ os.environ['TK_LIBRARY'] = os.path.join(PYTHON_INSTALL_DIR, 'tcl', 'tk8.6')
 target_name = 'mcasertool.exe'
 
 build_exe_options = {
-    "include_files": ["logo.ico", "README.rst", "LICENSE",
+    "include_files": ["logo.ico", "README.MD", "LICENSE",
                       os.path.join(PYTHON_INSTALL_DIR, 'Scripts', 'tk86t.dll'),
                       os.path.join(PYTHON_INSTALL_DIR, 'Scripts', 'tcl86t.dll')
                       ],
